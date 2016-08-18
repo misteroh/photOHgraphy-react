@@ -18,7 +18,7 @@ const model = {
         },
         {
             name: 'Landscape',
-            background: '/assets/landscape1.jpg'
+            background: '/assets/images/landscape.jpg'
         }
     ]
 };
