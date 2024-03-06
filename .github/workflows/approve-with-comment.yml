@@ -1,0 +1,31 @@
+name: "Approve with Comment"
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  approve:
+    name: Approve
+    # Only run if it#s a PR and the comment contains /deploy
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/lgtm')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get branch of PR
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+
+      - name: Auto Approve
+        uses: actions/github-script@v6
+        if: always()
+        with:
+          script: |
+            const result = await github.pulls.createReview({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number,
+            event: "APPROVE"
+            })
+
+            console.log(result)
