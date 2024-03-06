@@ -8,7 +8,7 @@ jobs:
   approve:
     name: Approve
     # Only run if it#s a PR and the comment contains /deploy
-    if: github.event.issue.pull_request && (contains(github.event.comment.body, '/lgtm') || contains(github.event.comment.body, '👍'))
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/lgtm')
     runs-on: ubuntu-latest
 
     steps:
@@ -27,11 +27,3 @@ jobs:
             pull_number: context.issue.number,
             event: "APPROVE"
             })
-
-      - name: Set latest commit status as ${{ job.status }}
-        uses: myrotvorets/set-commit-status-action@master
-        if: always()
-        with:
-          sha: ${{ steps.comment-branch.outputs.head_sha }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
